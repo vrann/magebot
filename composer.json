@@ -4,7 +4,7 @@
     "require": {
         "php": "~5.6.0|7.0.2|7.0.4|~7.0.6",
         "magento/module-amqp": "100.2.*",
-	"vrann/fbchatbot"
+	"vrann/fbchatbot": "dev-master"
     },
     "type": "magento2-module",
     "version": "100.2.0-dev",
