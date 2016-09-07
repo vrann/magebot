@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework-message-queue:etc/topology.xsd">
+    <exchange name="facebook-integration" type="topic" connection="amqp">
+        <binding id="message-received" topic="callback.received" destinationType="queue" destination="callback.received" />
+        <binding id="message-response" topic="vrann.magebot.api.messageSenderInterface.sendMessage" destinationType="queue" destination="queue.vrann.magebot.api.messageSenderInterface.sendMessage" />
+    </exchange>
+</config>

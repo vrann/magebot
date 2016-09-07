@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Vrann\Magebot\Api\Data\EntryInterface" type="Vrann\Magebot\Model\Data\Entry" />
+    <preference for="Vrann\Magebot\Api\Data\MessageInterface" type="Vrann\Magebot\Model\Data\Message" />
+    <preference for="Vrann\Magebot\Api\Data\MessageTextInterface" type="Vrann\Magebot\Model\Data\MessageText" />
+    <preference for="Vrann\Magebot\Api\Data\MessagingInterface" type="Vrann\Magebot\Model\Data\Messaging" />
+    <preference for="Vrann\Magebot\Api\Data\ParticipantInterface" type="Vrann\Magebot\Model\Data\Participant" />
+    <preference for="Vrann\Magebot\Api\Data\PostbackInterface" type="Vrann\Magebot\Model\Data\Postback" />
+    <preference for="Vrann\Magebot\Api\MessageProcessorInterface" type="Vrann\Magebot\Model\MessageProcessor" />
+    <preference for="Vrann\Magebot\Api\MessageSenderInterface" type="Vrann\Magebot\Api\MessageSenderInterfaceRemote" />
+    <!--preference for="Vrann\Magebot\Api\MessageSenderInterface" type="Vrann\Magebot\Model\MessageSender" /-->
+</config>

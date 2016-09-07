@@ -1,0 +1,22 @@
+{
+    "name": "vrann/magebot",
+    "description": "Magento Facebook Bot which implements a Chat Bot for the Magento store on Facebook Messenger",
+    "require": {
+        "php": "~5.6.0|7.0.2|7.0.4|~7.0.6",
+        "magento/module-amqp": "100.2.*"
+    },
+    "type": "magento2-module",
+    "version": "100.2.0-dev",
+    "license": [
+        "OSL-3.0",
+        "AFL-3.0"
+    ],
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Vrann\\Magebot\\": ""
+        }
+    }
+}
