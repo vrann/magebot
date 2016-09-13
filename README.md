@@ -25,5 +25,31 @@ bin/magento queue:consumers:start basic.consumer
 ## Testing
 Invoke vrann/magebot API through the Web API:
 ```
-curl -XPOST -H "Content-Type: application/json" -d '{"messageText": {"object":"page","entry":[{"id":"287630798278680","time":1471371304751,"messaging":[{"sender":{"id":"1011665925607547"},"recipient":{"id":"287630798278680"},"timestamp":1471371209420,"message":{"mid":"mid.1471371209330:af0fa0dd167d847914","seq":12,"text”:”Hi!"}}]}]}}' http://{magento.url}/rest/V1/facebook-bot-message
+curl -XPOST -H "Content-Type: application/json" -d '{
+  "messageText": {
+    "object": "page",
+    "entry": [
+      {
+        "id": "287630798278680", 
+        "time": 1471371304751, 
+        "messaging": [
+          {
+            "sender": {
+              "id":"1011665925607547"
+            }, 
+            "recipient": {
+              "id":"287630798278680"
+            }, 
+            "timestamp":1471371209420, 
+            "message": {
+              "mid": "mid.1471371209330:af0fa0dd167d847914", 
+              "seq": 12, 
+              "text": "Hi!"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}' http://{magento.url}/rest/V1/facebook-bot-message
 ```
