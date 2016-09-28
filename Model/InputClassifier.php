@@ -10,9 +10,10 @@ class InputClassifier
      * @var array
      */
     private $patterns = [
-        "/Do you have books by ([\\w\\s]*)?/" => 'search_catalog_by_author',
-        "/What books by (.*) do you have?/" => 'search_catalog_by_author',
-        "/I'd like to buy (\\d*) of (.x)/" => 'search_inventory_by_book',
+        "/Hi/" => 'greeting',
+        "/Do you have albums by ([\\w\\s]*)?/" => 'search_catalog_by_artist',
+        "/What albums by (.*) do you have?/" => 'search_catalog_by_artist',
+        "/I'd like to buy (\\d*) of (.x)/" => 'search_inventory_by_album',
     ];
 
     /**

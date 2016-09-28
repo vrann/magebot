@@ -81,6 +81,7 @@ class MessageProcessor implements \Vrann\Magebot\Api\MessageProcessorInterface
      */
     public function processMessage(\Vrann\Magebot\Api\Data\MessageTextInterface $messageText)
     {
+        echo serialize($messageText);
         /** @var \Vrann\Magebot\Api\Data\MessagingInterface $message */
         $message = $messageText
             ->getEntry()[0]
@@ -95,13 +96,13 @@ class MessageProcessor implements \Vrann\Magebot\Api\MessageProcessorInterface
             $response = null;
             switch ($payload) {
                 case self::WANT_TO_BUY_ANSWER_NO:
-                    $response = "Do you want to look for another book?";
+                    $response = "Do you want to look for another album?";
                     break;
                 case self::WANT_TO_BUY_ANSWER_YES:
-                    $response = "Great! How many items do you need?";
+                    $response = "Great! How many copies would you like?";
                     break;
                 default:
-                    $response = "I'm sorry, I din't understand that. Can you please re-state?";
+                    $response = "I'm sorry, I didn't quite catch that. Can you repeat, please?";
                     break;
             }
             $builder = new FluentBuilder();
@@ -123,7 +124,7 @@ class MessageProcessor implements \Vrann\Magebot\Api\MessageProcessorInterface
 
         $class = $this->inputClassifier->matchAgainstPatterns($text);
         if (!$class) {
-            $response = "Can you please re-state your question";
+            $response = "Apologies, I didn't quite catch that.  Can you please ask again so I can make sure I've got it right?";
             $builder = new FluentBuilder();
             $output = $builder->text()
                 ->setText($response)
@@ -135,11 +136,21 @@ class MessageProcessor implements \Vrann\Magebot\Api\MessageProcessorInterface
         }
 
         switch ($class['type']) {
-            case 'search_catalog_by_author':
+            case 'greeting':
+                $response = "Hi, how may I help you?";
+                $builder = new FluentBuilder();
+                $output = $builder->text()
+                    ->setText($response)
+                    ->setRecipientId($senderId)
+                    ->build();
+                $this->messageSender->sendMessage(json_encode($output));
+                $this->logger->critical($response);
+                break;
+            case 'search_catalog_by_artist':
                 $this->searchCriteriaBuilder->addFilters(
                     [
                         $this->filterBuilder
-                            ->setField('author')
+                            ->setField('artist')
                             ->setConditionType('like')
                             ->setValue($class['arguments'])
                             ->create(),
@@ -149,7 +160,7 @@ class MessageProcessor implements \Vrann\Magebot\Api\MessageProcessorInterface
                 $searchCriteria = $this->searchCriteriaBuilder->create();
                 $items = $this->catalogService->getList($searchCriteria)->getItems();
                 if (count($items) == 0) {
-                    $response = sprintf("Sorry, but we don't have anything by %s. Do you want to try another author?",
+                    $response = sprintf("Sorry, but we don't have anything by %s. Do you want to try another artist?",
                         $class['arguments']);
                     $builder = new FluentBuilder();
                     $output = $builder->text()
@@ -169,27 +180,6 @@ class MessageProcessor implements \Vrann\Magebot\Api\MessageProcessorInterface
                     $this->messageSender->sendMessage(json_encode($output));
                     $this->logger->critical($response);
 
-//                    $builder = new FluentBuilder();
-//                    $output = $builder->setRecipientId($senderId)
-//                        ->attachment()
-//                            ->template()
-//                                ->generic()
-//                                ->addElement()
-//                                    ->setTitle($firstItem->getName())
-//                                    ->setImageUrl($firstItem->getImageUrl())
-//                                    ->setSubTitle($firstItem->getDescription())
-//                                    ->addButton()
-//                                        ->setUrl($this->url->getUrl($firstItem))
-//                                        ->setTitle('View on Website')
-//                                        ->end()
-//                                    ->addButton()
-//                                        ->setTitle('Continue Chatting')
-//                                        ->setPostBack('USER_DEFINED_PAYLOAD')
-//                                        ->end()
-//                                    ->end()
-//                                ->end()
-//                            ->end()
-//                        ->build();
 
                     $builder = new FluentBuilder();
                     $output = $builder->text()
@@ -221,7 +211,7 @@ class MessageProcessor implements \Vrann\Magebot\Api\MessageProcessorInterface
                     $output = $builder->setRecipientId($senderId)
                         ->attachment()
                             ->buttonTemplate()
-                                ->setText('Do you want to buy it?')
+                                ->setText('Would you like to purchase it?')
                                 ->addButton()
                                     ->setTitle('Yes')
                                     ->setPostBack(self::WANT_TO_BUY_ANSWER_YES)
@@ -235,6 +225,7 @@ class MessageProcessor implements \Vrann\Magebot\Api\MessageProcessorInterface
                         ->build();
                     $this->messageSender->sendMessage(json_encode($output));
                     $this->logger->critical($response);
+                    break;
                 }
                 return 'OK';
         }
