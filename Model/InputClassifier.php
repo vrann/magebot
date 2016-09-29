@@ -27,7 +27,7 @@ class InputClassifier
         foreach ($this->patterns as $pattern => $type) {
             $matches = [];
             if (preg_match($pattern, $text, $matches)) {
-                return ['type' => $type, 'arguments' => $matches[1]];
+                return ['type' => $type, 'arguments' => count($matches) > 1 ? $matches[1]: $matches];
             }
         }
         return false;

@@ -23,8 +23,10 @@ class InputClassifierTest extends \PHPUnit_Framework_TestCase
     {
         return [
             [
-                'Do you have books by Marcel Proust?',
-                ['type' => 'search_catalog_by_author', 'arguments' => 'Marcel Proust']
+		'Hi',
+		['type' => 'greeting', 'arguments' => ['Hi']]                
+//'Do you have books by Marcel Proust?',
+                //['type' => 'search_catalog_by_author', 'arguments' => 'Marcel Proust']
             ],
         ];
     }
