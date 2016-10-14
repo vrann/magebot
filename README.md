@@ -15,7 +15,7 @@ While processing message, Magebot invokes handler which generates response to th
 1. Install https://github.com/vrann/http-rabbitmq-writer on public endpoint. Install RabbitMQ. Register callback.php to listen messages from the Facebook Messenger. Start response.php in daemon mode, to send responses back to the Facebook.
 2. Install magebot extension on Magento:
 ```
-composer install vrann/magechatbot
+composer require vrann/magechatbot
 ```
 3. Start RabbitMQ consumer on Magento which will listen the queue with the messages from Facebook
 ```
