@@ -49,6 +49,12 @@ class MessageProcessor implements \Vrann\Magebot\Api\MessageProcessorInterface
     private $url;
 
     /**
+     * @var \Magento\Framework\UrlInterface
+     */
+    private $urlBuilder;
+
+    /**
+     * MessageProcessor constructor.
      * @param LoggerInterface $logger
      * @param InputClassifier $inputClassifier
      * @param MessageSenderInterface $messageSender
@@ -56,6 +62,7 @@ class MessageProcessor implements \Vrann\Magebot\Api\MessageProcessorInterface
      * @param \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder
      * @param \Magento\Framework\Api\FilterBuilder $filterBuilder
      * @param \Magento\Catalog\Model\Product\Url $url
+     * @param \Magento\Framework\UrlInterface $urlBuilder
      */
     public function __construct(
         LoggerInterface $logger,
@@ -64,7 +71,8 @@ class MessageProcessor implements \Vrann\Magebot\Api\MessageProcessorInterface
         \Magento\Catalog\Api\ProductRepositoryInterface $productRepositoryInterface,
         \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
         \Magento\Framework\Api\FilterBuilder $filterBuilder,
-        \Magento\Catalog\Model\Product\Url $url
+        \Magento\Catalog\Model\Product\Url $url,
+        \Magento\Framework\UrlInterface $urlBuilder
     ){
         $this->logger = $logger;
         $this->inputClassifier = $inputClassifier;
@@ -73,6 +81,7 @@ class MessageProcessor implements \Vrann\Magebot\Api\MessageProcessorInterface
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->filterBuilder = $filterBuilder;
         $this->url = $url;
+        $this->urlBuilder = $urlBuilder;
     }
 
     /**
@@ -135,6 +144,18 @@ class MessageProcessor implements \Vrann\Magebot\Api\MessageProcessorInterface
         }
 
         switch ($class['type']) {
+            case 'qty':
+                $qty = $class['arguments'];
+                $product = 1;
+                $url = $this->urlBuilder->getUrl('checkout/cart/add', ['product' => $product, 'qty' => $qty]);
+                $builder = new \FluentBuilder();
+                $output = $builder->text()
+                    ->setText("Here is your shopping cart: " . $url)
+                    ->setRecipientId($senderId)
+                    ->build();
+                $this->messageSender->sendMessage(json_encode($output));
+                $this->logger->critical($url);
+                break;
             case 'search_catalog_by_author':
                 $this->searchCriteriaBuilder->addFilters(
                     [

@@ -13,6 +13,7 @@ class InputClassifier
         "/Do you have books by ([\\w\\s]*)?/" => 'search_catalog_by_author',
         "/What books by (.*) do you have?/" => 'search_catalog_by_author',
         "/I'd like to buy (\\d*) of (.x)/" => 'search_inventory_by_book',
+        "/(\\d)+/" => 'quantity'
     ];
 
     /**
